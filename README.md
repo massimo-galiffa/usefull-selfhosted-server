@@ -24,13 +24,13 @@
 
 ## Installation
 
-# 🏠 Homeserver Setup Guide
+# Homeserver Setup Guide
 
 This guide walks you through setting up your homeserver using Ubuntu, Docker, and a Next.js dashboard.
 
 ---
 
-# 🧠 Concept
+# Concept
 
 The system is designed to be:
 
@@ -41,7 +41,7 @@ The system is designed to be:
 
 ---
 
-# 🖥 Phase 1: Development in a VM (Recommended)
+#  Phase 1: Development in a VM (Recommended)
 
 Before using your real laptop, build and test everything in a virtual machine.
 
