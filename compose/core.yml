@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    restart: always
+    environment:
+      TZ: ${TZ}
+      WEBPASSWORD: ${PIHOLE_WEBPASSWORD}
+    ports:
+      - "8081:80"
+      - "53:53/tcp"
+      - "53:53/udp"
+    volumes:
+      - pihole_data:/etc/pihole
+
+  dashboard:
+    image: nginx:alpine
+    container_name: dashboard
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./dashboard:/usr/share/nginx/html:ro
+
+volumes:
+  portainer_data:
+  pihole_data:
