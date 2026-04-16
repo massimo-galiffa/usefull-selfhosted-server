@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7068f489-2ca2-43ac-beb4-f00f4e874b21" name="Changes" comment="" />
+    <list default="true" id="7068f489-2ca2-43ac-beb4-f00f4e874b21" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/system/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/system/homeserver.service" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,6 +17,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "massimo-galiffa"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/massimo-galiffa/usefull-selfhosted-server.git",
+    "accountId": "fd0fa9aa-b212-44ea-9c87-632c56bdf21c"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -29,6 +45,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -74,7 +91,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1776323828343</updated>
-      <workItem from="1776323829539" duration="2096000" />
+      <workItem from="1776323829539" duration="3214000" />
     </task>
     <servers />
   </component>

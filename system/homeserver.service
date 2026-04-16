@@ -1,0 +1,16 @@
+[Unit]
+Description=Homeserver Docker Compose Stack
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/DEINUSER/homeserver
+ExecStart=/usr/bin/docker compose --env-file .env -f compose/core.yml up -d
+ExecStop=/usr/bin/docker compose --env-file .env -f compose/core.yml down
+RemainAfterExit=yes
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
