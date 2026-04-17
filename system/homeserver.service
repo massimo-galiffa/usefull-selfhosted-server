@@ -6,9 +6,9 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-WorkingDirectory=/home/DEINUSER/homeserver
-ExecStart=/usr/bin/docker compose --env-file .env -f compose/core.yml up -d
-ExecStop=/usr/bin/docker compose --env-file .env -f compose/core.yml down
+WorkingDirectory={{REPO_ROOT}}
+ExecStart=/usr/bin/docker compose --env-file {{ENV_FILE}} -f {{REPO_ROOT}}/compose/core.yml up -d
+ExecStop=/usr/bin/docker compose --env-file {{ENV_FILE}} -f {{REPO_ROOT}}/compose/core.yml down
 RemainAfterExit=yes
 TimeoutStartSec=0
 
