@@ -1,132 +1,70 @@
 # Homeserver Starter
 
-## Features
-- Pi-hole (DNS Adblock)
-- Portainer (Docker UI)
-- Dashboard (Intranet)
-- Optional: Minecraft Server
+Docker-based homeserver stack for a laptop or mini PC with:
 
-## Setup
+- Pi-hole
+- Portainer
+- Dashboard
+- optional Minecraft server
 
-1. .env create youreself a .env :
-   cp .env.example .env
+The project now supports:
 
-2. Setup:
-   bash setup/setup-host.sh
+- one-command installation with `bash install.sh`
+- automatic LAN IP detection
+- automatic `.env` generation and update
+- automatic startup after reboot via `systemd`
+- laptop mode so the machine keeps running with the lid closed
+- watchdog timer for automatic container recovery
+- live dashboard widgets for health, errors and load history
 
-3. Deploy:
-   bash scripts/deploy.sh
-
-## access
-- Dashboard: http://SERVER-IP:8080
-- Portainer: http://SERVER-IP:9000
-- Pi-hole: http://SERVER-IP:8081/admin
-
-## Installation
-
-# Homeserver Setup Guide
-
-This guide walks you through setting up your homeserver using Ubuntu, Docker, and a Next.js dashboard.
-
----
-
-# Concept
-
-The system is designed to be:
-
-* reproducible (scripts + Docker)
-* local-first (runs inside your home network)
-* modular (services via Docker)
-* easy to redeploy on new hardware
-
----
-
-#  Phase 1: Development in a VM (Recommended)
-
-Before using your real laptop, build and test everything in a virtual machine.
-
-## 1. Install Ubuntu
-
-Use:
-
-* Ubuntu Desktop (minimal install is enough)
-
-## 2. Update system
-
-```bash
-sudo apt update && sudo apt upgrade -y
-sudo apt install git -y
-```
-
-## 3. Clone repository
+## Quick Start
 
 ```bash
 git clone https://github.com/massimo-galiffa/usefull-selfhosted-server
 cd usefull-selfhosted-server
+bash install.sh
 ```
 
-## 4. Configure environment
+The installer will:
 
-```bash
-cp .env.example .env
-nano .env
-```
+1. install Docker and required packages
+2. create or update `.env`
+3. detect the current LAN IP automatically
+4. generate a Pi-hole password if needed
+5. disable suspend on lid close
+6. install the `homeserver.service` autostart unit
+7. install the watchdog timer for automatic recovery checks
+8. build and start the stack
 
-Set your VM IP:
+## Access
 
-```
-SERVER_IP=YOUR_VM_IP
-```
+After installation, open:
 
-Find your IP:
+- Dashboard: `http://SERVER-IP:8080`
+- Portainer: `http://SERVER-IP:9000`
+- Pi-hole: `http://SERVER-IP:8081/admin`
 
-```bash
-ip a
-```
+`SERVER-IP` is detected automatically during install and deploy.
 
----
+## Manual Commands
 
-#  Phase 2: Install Host Dependencies
-
-Run:
+If you want to run steps separately:
 
 ```bash
 bash setup/setup-host.sh
-```
-
-Then log out and back in:
-
-```bash
-exit
-```
-
----
-
-#  Phase 3: Deploy Services
-
-```bash
+bash setup/configure-lid.sh
+bash setup/install-service.sh
+bash setup/install-watchdog.sh
 bash scripts/deploy.sh
 ```
 
-This starts:
+To update everything later:
 
-* Dashboard (Next.js)
-* Pi-hole
-* Portainer
+```bash
+bash scripts/update.sh
+```
 
----
-
-#  Phase 4: Access Services
-
-Open in browser:
-
-* Dashboard: http://SERVER_IP:3000
-* Portainer: http://SERVER_IP:9000
-* Pi-hole: http://SERVER_IP:8081/admin
-
----
-
-# 🎮 Optional: Minecraft Server
+## Optional Minecraft Server
 
 ```bash
 docker compose --env-file .env -f compose/optional.minecraft.yml up -d
@@ -134,123 +72,39 @@ docker compose --env-file .env -f compose/optional.minecraft.yml up -d
 
 Connect with:
 
-```
+```text
 SERVER_IP:25565
 ```
 
----
+## Important Notes
 
-#  Phase 5: Autostart on Boot
+- Normal reboots are handled automatically by `systemd` and Docker restart policies.
+- A watchdog timer checks the stack every 5 minutes and restarts stopped or unhealthy containers.
+- Automatic power-on after a complete power loss cannot reliably be configured from Linux alone.
+- For that last part, set the BIOS/UEFI option `Power On after AC loss` or `Restore on AC power` to `Power On`.
+- Closing the laptop lid will no longer suspend the machine after `install.sh` or `setup/configure-lid.sh`.
 
-## Create systemd service
+## Stack
 
-copy homeserver.service file from system folder to:
+- Dashboard runs on port `8080`
+- Portainer runs on port `9000`
+- Pi-hole web UI runs on port `8081`
+- Pi-hole DNS uses port `53`
+- Minecraft, when enabled, uses port `25565`
 
-```
-/etc/systemd/system/homeserver.service
-```
+## Monitoring
 
-Enable it:
+The dashboard now shows:
 
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable homeserver.service
-```
+- Docker container state and health
+- CPU, RAM and disk usage
+- host temperature when Linux exposes a readable sensor
+- service reachability for Dashboard, Pi-hole and Portainer
+- short history lines so you can spot trends instead of only one snapshot
 
----
+## Security
 
-#  Phase 6: Power Recovery (Important)
-
-After power loss:
-
-* Services will restart automatically
-* Laptop may NOT power on automatically
-
-Check BIOS/UEFI for:
-
-* Power on after AC loss
-* Restore on AC power
-
-Set to:
-
-```
-Power On
-```
-
----
-
-#  Phase 7: Testing
-
-Test reboot:
-
-```bash
-sudo reboot
-```
-
-Check containers:
-
-```bash
-docker ps
-```
-
----
-
-#  Phase 8: Deploy to Real Laptop
-
-## 1. Install Ubuntu
-
-## 2. Clone repo
-
-```bash
-git clone https://github.com/massimo-galiffa/usefull-selfhosted-server
-cd usefull-selfhosted-server
-```
-
-## 3. Run setup
-
-```bash
-bash setup/setup-host.sh
-```
-
-## 4. Deploy
-
-```bash
-bash scripts/deploy.sh
-```
-
----
-
-#  Architecture
-
-```
-Router
-└── Homeserver (Laptop)
-    ├── Ubuntu Desktop
-    ├── Docker
-    │   ├── Dashboard (Next.js)
-    │   ├── Pi-hole
-    │   ├── Portainer
-    │   └── Minecraft (optional)
-    ├── VNC (LAN only)
-    └── SSH
-```
-
----
-
-#  Security Notes
-
-* Do NOT expose ports to the internet
-* Keep everything inside your local network
-* Use VPN later for remote access
-* Use strong passwords
-* Keep system updated
-
----
-
-#  Updates
-
-```bash
-bash scripts/update.sh
-```
-
----
+- Keep the services inside your local network.
+- Do not expose these ports directly to the public internet.
+- Use strong passwords.
+- Keep Ubuntu and Docker updated.
