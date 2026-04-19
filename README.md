@@ -36,6 +36,8 @@ The installer will:
 7. install the watchdog timer for automatic recovery checks
 8. build and start the stack
 
+If you run the installer from the graphical desktop, the lid-close config is written safely without restarting your login session. Reboot once afterward to apply that part fully.
+
 ## Access
 
 After installation, open:
@@ -83,6 +85,7 @@ SERVER_IP:25565
 - Automatic power-on after a complete power loss cannot reliably be configured from Linux alone.
 - For that last part, set the BIOS/UEFI option `Power On after AC loss` or `Restore on AC power` to `Power On`.
 - Closing the laptop lid will no longer suspend the machine after `install.sh` or `setup/configure-lid.sh`.
+- The installer no longer force-restarts `systemd-logind` during an active desktop session; reboot once after install if needed.
 
 ## Stack
 

@@ -13,4 +13,5 @@ bash "${ROOT_DIR}/scripts/deploy.sh"
 echo
 echo "Homeserver installation complete."
 echo "The stack is configured to start automatically after reboots."
+echo "If lid-close behavior has not changed yet, reboot once to apply the new logind settings safely."
 echo "For automatic power-on after total power loss, set the BIOS/UEFI option 'Power On after AC loss' manually."

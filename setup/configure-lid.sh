@@ -25,6 +25,11 @@ AllowHybridSleep=no
 AllowSuspendThenHibernate=no
 EOF
 
-sudo systemctl restart systemd-logind
-
-log "Laptop sleep on lid close has been disabled."
+if [[ -n "${XDG_SESSION_ID:-}" ]] || loginctl list-sessions 2>/dev/null | grep -qE '\b(tty|seat|wayland|x11)\b'; then
+    log "Lid-close settings were written successfully."
+    log "Skipping 'systemd-logind' restart to avoid breaking the active desktop session."
+    log "Please reboot once later, or restart systemd-logind manually from a non-graphical session."
+else
+    sudo systemctl restart systemd-logind
+    log "Laptop sleep on lid close has been disabled."
+fi
